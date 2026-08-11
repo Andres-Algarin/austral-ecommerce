@@ -1,4 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+
+import { Product } from '../../products/entities/product.entity';
 
 @Entity('categorias')
 export class Category {
@@ -17,4 +26,22 @@ export class Category {
     nullable: true,
   })
   imagen!: string;
+
+  @Column({
+    default: true,
+  })
+  estado!: boolean;
+
+  @CreateDateColumn({
+    type: 'timestamp',
+  })
+  fecha_creacion!: Date;
+
+  @UpdateDateColumn({
+    type: 'timestamp',
+  })
+  fecha_actualizacion!: Date;
+
+  @OneToMany(() => Product, (product) => product.category)
+  products!: Product[];
 }

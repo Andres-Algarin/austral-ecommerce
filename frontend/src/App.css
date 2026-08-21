@@ -1,0 +1,97 @@
+#center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero .base {
+  display: block;
+}
+
+.hero .framework {
+  position: absolute;
+  width: 90px;
+  height: auto;
+}
+
+.hero .vite {
+  position: absolute;
+  width: 70px;
+  height: auto;
+  animation: spin 20s linear infinite;
+}
+
+.ticks {
+  border-top: 1px solid #e2e8f0;
+  margin: 2rem 0;
+}
+
+#next-steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  text-align: left;
+}
+
+#next-steps h2 {
+  margin-top: 0;
+}
+
+#next-steps ul {
+  list-style: none;
+  padding: 0;
+}
+
+#next-steps li {
+  margin: 0.5rem 0;
+}
+
+#next-steps a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.icon {
+  width: 28px;
+  height: 28px;
+}
+
+.button-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.logo {
+  width: 18px;
+  height: 18px;
+}
+
+#spacer {
+  height: 3rem;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .counter {
+    animation: spin 20s linear infinite;
+  }
+}

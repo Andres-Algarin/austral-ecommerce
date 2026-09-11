@@ -3,10 +3,8 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 
@@ -18,7 +16,6 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly usersRepository: Repository<User>,
-
     private readonly jwtService: JwtService,
   ) {}
 
@@ -81,11 +78,11 @@ export class AuthService {
   }
 
   async login(correo: string, password: string) {
-    const user = await this.usersRepository.findOne({
-      where: {
-        correo,
-      },
-    });
+    const user = await this.usersRepository
+      .createQueryBuilder('user')
+      .addSelect('user.password_hash')
+      .where('user.correo = :correo', { correo })
+      .getOne();
 
     if (!user) {
       throw new UnauthorizedException(

@@ -1,21 +1,47 @@
+import {
+  IsInt,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Length,
+  Min,
+} from 'class-validator';
+
+import { Type } from 'class-transformer';
+
 export class CreateProductDto {
+  @Type(() => Number)
+  @IsInt()
+  @Min(1)
+  id_categoria!: number;
+
+  @IsString()
+  @Length(2, 150)
   nombre!: string;
 
-  descripcion!: string;
+  @IsOptional()
+  @IsString()
+  descripcion?: string;
 
-  beneficios!: string;
+  @IsOptional()
+  @IsString()
+  beneficios?: string;
 
-  ingredientes!: string;
+  @IsOptional()
+  @IsString()
+  ingredientes?: string;
 
-  modo_uso!: string;
+  @IsOptional()
+  @IsString()
+  modo_uso?: string;
 
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
   precio!: number;
 
+  @Type(() => Number)
+  @IsInt()
+  @Min(0)
   stock!: number;
-
-  imagen_principal!: string;
-
-  estado!: boolean;
-
-  id_categoria!: number;
 }

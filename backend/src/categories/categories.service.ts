@@ -1,10 +1,13 @@
 import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
+ConflictException,
+Injectable,
+NotFoundException,
 } from '@nestjs/common';
+
 import { InjectRepository } from '@nestjs/typeorm';
-import { QueryFailedError, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
+
+import type { Multer } from 'multer';
 
 import { Category } from './entities/category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -12,59 +15,145 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Injectable()
 export class CategoriesService {
-  constructor(
-    @InjectRepository(Category)
-    private readonly categoryRepository: Repository<Category>,
-  ) {}
+constructor(
+@InjectRepository(Category)
+private readonly categoriesRepository: Repository<Category>,
+) {}
 
-  async create(createCategoryDto: CreateCategoryDto) {
-    const category = this.categoryRepository.create(createCategoryDto);
-    return await this.categoryRepository.save(category);
-  }
+async findAll() {
+return this.categoriesRepository.find({
+order: {
+id_categoria: 'ASC',
+},
+});
+}
 
-  async findAll() {
-    return await this.categoryRepository.find();
-  }
+async findOne(id: number) {
+const category =
+await this.categoriesRepository.findOne({
+where: {
+id_categoria: id,
+},
+});
 
-  async findOne(id: number) {
-    const category = await this.categoryRepository.findOne({
-      where: { id_categoria: id },
+
+if (!category) {
+  throw new NotFoundException(
+    'Categoría no encontrada',
+  );
+}
+
+return category;
+
+
+}
+
+async create(
+createCategoryDto: CreateCategoryDto,
+imagen?: Multer.File,
+) {
+const existingCategory =
+await this.categoriesRepository.findOne({
+where: {
+nombre: createCategoryDto.nombre,
+},
+});
+
+
+if (existingCategory) {
+  throw new ConflictException(
+    'Ya existe una categoría con ese nombre',
+  );
+}
+
+const category =
+  this.categoriesRepository.create({
+    nombre: createCategoryDto.nombre,
+    imagen: imagen
+      ? `/uploads/categories/${imagen.filename}`
+      : null,
+    estado: true,
+  });
+
+return this.categoriesRepository.save(
+  category,
+);
+
+
+}
+
+async update(
+id: number,
+updateCategoryDto: UpdateCategoryDto,
+imagen?: Multer.File,
+) {
+const category =
+await this.findOne(id);
+
+
+if (
+  updateCategoryDto.nombre &&
+  updateCategoryDto.nombre !==
+    category.nombre
+) {
+  const existingCategory =
+    await this.categoriesRepository.findOne({
+      where: {
+        nombre:
+          updateCategoryDto.nombre,
+      },
     });
 
-    if (!category) {
-      throw new NotFoundException(
-        `No existe una categoría con el ID ${id}`,
-      );
-    }
-
-    return category;
+  if (existingCategory) {
+    throw new ConflictException(
+      'Ya existe una categoría con ese nombre',
+    );
   }
 
-  async update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    const category = await this.findOne(id);
+  category.nombre =
+    updateCategoryDto.nombre;
+}
 
-    Object.assign(category, updateCategoryDto);
+if (imagen) {
+  category.imagen =
+    `/uploads/categories/${imagen.filename}`;
+}
 
-    return await this.categoryRepository.save(category);
-  }
+if (
+  updateCategoryDto.estado !==
+  undefined
+) {
+  category.estado =
+    updateCategoryDto.estado;
+}
 
-  async remove(id: number) {
-    const category = await this.findOne(id);
+return this.categoriesRepository.save(
+  category,
+);
 
-    try {
-      await this.categoryRepository.remove(category);
 
-      return {
-        message: `Categoría con ID ${id} eliminada correctamente`,
-      };
-    } catch (error) {
-      if (error instanceof QueryFailedError) {
-        throw new BadRequestException(
-          'No se puede eliminar la categoría porque tiene productos asociados.',
-        );
-      }
+}
 
-      throw error;
-    }
-  }
+async remove(id: number) {
+const category =
+await this.findOne(id);
+
+
+try {
+  await this.categoriesRepository.remove(
+    category,
+  );
+
+  return {
+    message:
+      'Categoría eliminada correctamente',
+  };
+} catch (error) {
+  throw new ConflictException(
+    'No se puede eliminar la categoría porque tiene productos asociados',
+  );
+}
+
+
+}
 }

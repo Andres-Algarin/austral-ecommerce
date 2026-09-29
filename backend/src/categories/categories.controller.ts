@@ -1,188 +1,143 @@
 import {
-Body,
-Controller,
-Delete,
-Get,
-Param,
-ParseIntPipe,
-Patch,
-Post,
-UploadedFile,
-UseGuards,
-UseInterceptors,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
-import type { Multer } from 'multer';
 
 import { CategoriesService } from './categories.service';
+
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles';
+import { imageUploadOptions } from '../common/uploads';
 
 @Controller('categories')
 export class CategoriesController {
-constructor(
-private readonly categoriesService: CategoriesService,
-) {}
+  constructor(
+    private readonly categoriesService: CategoriesService,
+  ) {}
 
-@Get()
-findAll() {
-return this.categoriesService.findAll();
-}
+  // ==========================================
+  // CATEGORÍAS ACTIVAS
+  // Público
+  // ==========================================
 
-@Get(':id')
-findOne(
-@Param('id', ParseIntPipe) id: number,
-) {
-return this.categoriesService.findOne(id);
-}
+  @Get()
+  findAll() {
+    return this.categoriesService.findAll();
+  }
 
-@Post()
-@UseGuards(JwtAuthGuard, RolesGuard)
-@Roles('admin')
-@UseInterceptors(
-FileInterceptor('imagen', {
-storage: diskStorage({
-destination: './uploads/categories',
-filename: (
-req,
-file,
-callback,
-) => {
-const uniqueSuffix =
-Date.now() +
-'-' +
-Math.round(
-Math.random() * 1e9,
-);
+  // ==========================================
+  // TODAS LAS CATEGORÍAS (incluye inactivas)
+  // Solo ADMIN. Declarado antes de ':id'.
+  // ==========================================
 
+  @Get('admin/all')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  findAllAdmin() {
+    return this.categoriesService.findAll(false);
+  }
 
-      const extension =
-        extname(file.originalname);
+  @Get('admin/:id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  findOneAdmin(
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.categoriesService.findOne(id, false);
+  }
 
-      callback(
-        null,
-        `categoria-${uniqueSuffix}${extension}`,
-      );
-    },
-  }),
-  fileFilter: (
-    req,
-    file,
-    callback,
-  ) => {
-    if (
-      !file.mimetype.startsWith(
-        'image/',
-      )
-    ) {
-      return callback(
-        new Error(
-          'Solo se permiten archivos de imagen',
-        ),
-        false,
-      );
+  // ==========================================
+  // UNA CATEGORÍA ACTIVA
+  // Público
+  // ==========================================
+
+  @Get(':id')
+  findOne(
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.categoriesService.findOne(id);
+  }
+
+  // ==========================================
+  // CREAR CATEGORÍA
+  // Solo ADMIN
+  // ==========================================
+
+  @Post()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @UseInterceptors(
+    FileInterceptor(
+      'imagen',
+      imageUploadOptions('categories', 'categoria'),
+    ),
+  )
+  create(
+    @Body() createCategoryDto: CreateCategoryDto,
+    @UploadedFile() file?: Express.Multer.File,
+  ) {
+    return this.categoriesService.create({
+      ...createCategoryDto,
+
+      imagen: file
+        ? `/uploads/categories/${file.filename}`
+        : undefined,
+    });
+  }
+
+  // ==========================================
+  // ACTUALIZAR CATEGORÍA
+  // Solo ADMIN
+  // ==========================================
+
+  @Patch(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @UseInterceptors(
+    FileInterceptor(
+      'imagen',
+      imageUploadOptions('categories', 'categoria'),
+    ),
+  )
+  update(
+    @Param('id', ParseIntPipe) id: number,
+
+    @Body() updateCategoryDto: UpdateCategoryDto,
+
+    @UploadedFile() file?: Express.Multer.File,
+  ) {
+    if (file) {
+      updateCategoryDto.imagen =
+        `/uploads/categories/${file.filename}`;
     }
 
-    callback(null, true);
-  },
-  limits: {
-    fileSize: 5 * 1024 * 1024,
-  },
-}),
+    return this.categoriesService.update(
+      id,
+      updateCategoryDto,
+    );
+  }
 
-
-)
-create(
-@Body() createCategoryDto: CreateCategoryDto,
-@UploadedFile() imagen?: Multer.File,
-) {
-return this.categoriesService.create(
-createCategoryDto,
-imagen,
-);
-}
-
-@Patch(':id')
-@UseGuards(JwtAuthGuard, RolesGuard)
-@Roles('admin')
-@UseInterceptors(
-FileInterceptor('imagen', {
-storage: diskStorage({
-destination: './uploads/categories',
-filename: (
-req,
-file,
-callback,
-) => {
-const uniqueSuffix =
-Date.now() +
-'-' +
-Math.round(
-Math.random() * 1e9,
-);
-
-
-      const extension =
-        extname(file.originalname);
-
-      callback(
-        null,
-        `categoria-${uniqueSuffix}${extension}`,
-      );
-    },
-  }),
-  fileFilter: (
-    req,
-    file,
-    callback,
-  ) => {
-    if (
-      !file.mimetype.startsWith(
-        'image/',
-      )
-    ) {
-      return callback(
-        new Error(
-          'Solo se permiten archivos de imagen',
-        ),
-        false,
-      );
-    }
-
-    callback(null, true);
-  },
-  limits: {
-    fileSize: 5 * 1024 * 1024,
-  },
-}),
-
-
-)
-update(
-@Param('id', ParseIntPipe) id: number,
-@Body() updateCategoryDto: UpdateCategoryDto,
-@UploadedFile() imagen?: Multer.File,
-) {
-return this.categoriesService.update(
-id,
-updateCategoryDto,
-imagen,
-);
-}
-
-@Delete(':id')
-@UseGuards(JwtAuthGuard, RolesGuard)
-@Roles('admin')
-remove(
-@Param('id', ParseIntPipe) id: number,
-) {
-return this.categoriesService.remove(id);
-}
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  remove(
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    return this.categoriesService.remove(id);
+  }
 }

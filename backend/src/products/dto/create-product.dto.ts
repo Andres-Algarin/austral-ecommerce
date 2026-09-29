@@ -1,22 +1,17 @@
+import { Transform } from 'class-transformer';
 import {
+  IsBoolean,
   IsInt,
+  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
-  Length,
   Min,
 } from 'class-validator';
 
-import { Type } from 'class-transformer';
-
 export class CreateProductDto {
-  @Type(() => Number)
-  @IsInt()
-  @Min(1)
-  id_categoria!: number;
-
   @IsString()
-  @Length(2, 150)
+  @IsNotEmpty()
   nombre!: string;
 
   @IsOptional()
@@ -35,13 +30,37 @@ export class CreateProductDto {
   @IsString()
   modo_uso?: string;
 
-  @Type(() => Number)
+  @Transform(({ value }: { value: unknown }) => Number(value))
   @IsNumber()
   @Min(0)
   precio!: number;
 
-  @Type(() => Number)
+  @Transform(({ value }: { value: unknown }) => Number(value))
   @IsInt()
   @Min(0)
   stock!: number;
+
+  @IsOptional()
+  @IsString()
+  imagen_principal?: string;
+
+  @IsOptional()
+  @Transform(({ value }: { value: unknown }) => {
+    if (value === 'true' || value === true) {
+      return true;
+    }
+
+    if (value === 'false' || value === false) {
+      return false;
+    }
+
+    return value;
+  })
+  @IsBoolean()
+  estado?: boolean;
+
+  @Transform(({ value }: { value: unknown }) => Number(value))
+  @IsInt()
+  @Min(1)
+  id_categoria!: number;
 }

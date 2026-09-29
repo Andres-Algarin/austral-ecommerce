@@ -1,0 +1,254 @@
+.login-page {
+  min-height: 100vh ;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--color-background);
+}
+
+.login-brand {
+  min-height: 100vh;
+  width: 100%;
+  background: var(--color-primary);
+  color: var(--color-text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+}
+
+.login-brand-content {
+  width: 100%;
+  max-width: 500px;
+}
+
+.login-brand-label {
+  display: inline-block;
+  margin-bottom: 30px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 4px;
+}
+
+.login-brand h1 {
+  font-size: clamp(48px, 6vw, 82px);
+  line-height: 0.95;
+  margin-bottom: 30px;
+  color: var(--color-text-light);
+}
+
+.login-brand p {
+  max-width: 400px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.login-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  background: var(--color-background);
+}
+
+.login-container {
+  width: 100%;
+  max-width: 440px;
+}
+
+.login-header {
+  margin-bottom: 40px;
+}
+
+.login-header > span {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--color-primary);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+.login-header h2 {
+  margin-bottom: 10px;
+  font-size: 42px;
+  line-height: 1;
+}
+
+.login-header p {
+  color: var(--color-text-secondary);
+  font-size: 16px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.login-field label {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.login-field input {
+  width: 100%;
+  height: 54px;
+  padding: 0 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  outline: none;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-size: 15px;
+  transition: border-color 0.2s ease;
+}
+
+.login-field input:focus {
+  border-color: var(--color-primary);
+}
+
+.login-field input::placeholder {
+  color: #999999;
+}
+
+.password-input {
+  position: relative;
+}
+
+.password-input input {
+  padding-right: 50px;
+}
+
+.password-input button {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+}
+
+.login-button {
+  width: 100%;
+  height: 54px;
+  margin-top: 8px;
+  background: var(--color-primary);
+  color: var(--color-text-light);
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.login-button:hover {
+  background: #765fa8;
+  transform: translateY(-1px);
+}
+
+.login-register {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 30px;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+.login-register a {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+@media (max-width: 800px) {
+  .login-page {
+    grid-template-columns: 1fr;
+  }
+
+  .login-brand {
+    min-height: 320px;
+    padding: 50px 30px;
+  }
+
+  .login-brand h1 {
+    font-size: 52px;
+  }
+
+  .login-section {
+    padding: 50px 30px;
+  }
+}
+
+
+.login-link {
+  padding: 11px 18px;
+  border: 1px solid var(--color-text-light);
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.login-link:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: var(--color-text);
+}
+/* Recuperar contraseña */
+.login-forgot {
+  align-self: flex-end;
+  margin-top: -12px;
+  color: var(--color-primary);
+  font-size: 13.5px;
+  font-weight: 500;
+}
+
+.login-forgot:hover {
+  text-decoration: underline;
+}
+
+.login-success {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 22px;
+  border: 1px solid color-mix(in srgb, var(--color-accent) 50%, var(--color-border));
+  background: color-mix(in srgb, var(--color-accent) 10%, #ffffff);
+  color: #3d3848;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+a.login-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-brand-label {
+  color: var(--color-text-light);
+}
+
+.login-error {
+  padding: 11px 14px;
+  border: 1px solid color-mix(in srgb, var(--color-error) 25%, var(--color-border));
+  background: color-mix(in srgb, var(--color-error) 6%, #ffffff);
+  color: var(--color-error);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.login-error a {
+  color: var(--color-primary);
+  font-weight: 600;
+}

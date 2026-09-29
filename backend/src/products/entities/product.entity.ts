@@ -4,11 +4,13 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 import { Category } from '../../categories/entities/category.entity';
+import { ProductImage } from '../../product-images/entities/product-image.entity';
 
 @Entity('productos')
 export class Product {
@@ -65,7 +67,7 @@ export class Product {
     length: 255,
     nullable: true,
   })
-  imagen_principal!: string;
+  imagen_principal!: string | null;
 
   @Column({
     default: true,
@@ -85,4 +87,8 @@ export class Product {
   @ManyToOne(() => Category, (category) => category.products)
   @JoinColumn({ name: 'id_categoria' })
   category!: Category;
+
+  // Galería de imágenes adicionales.
+  @OneToMany(() => ProductImage, (image) => image.producto)
+  imagenes!: ProductImage[];
 }

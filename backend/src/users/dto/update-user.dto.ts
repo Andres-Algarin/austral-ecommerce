@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import {
   IsEmail,
   IsOptional,
@@ -22,6 +23,11 @@ export class UpdateUserDto {
   cedula?: string;
 
   @IsOptional()
+  @Transform(({ value }: { value: unknown }) =>
+    typeof value === 'string'
+      ? value.trim().toLowerCase()
+      : value,
+  )
   @IsEmail()
   correo?: string;
 

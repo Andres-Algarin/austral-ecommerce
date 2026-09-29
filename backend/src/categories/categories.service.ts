@@ -1,159 +1,133 @@
 import {
-ConflictException,
-Injectable,
-NotFoundException,
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-
-import type { Multer } from 'multer';
+import { QueryFailedError, Repository } from 'typeorm';
 
 import { Category } from './entities/category.entity';
+import { deleteUploadedFile } from '../common/uploads';
+
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Injectable()
 export class CategoriesService {
-constructor(
-@InjectRepository(Category)
-private readonly categoriesRepository: Repository<Category>,
-) {}
+  constructor(
+    @InjectRepository(Category)
+    private readonly categoryRepository: Repository<Category>,
+  ) {}
 
-async findAll() {
-return this.categoriesRepository.find({
-order: {
-id_categoria: 'ASC',
-},
-});
-}
+  async create(createCategoryDto: CreateCategoryDto) {
+    const existingCategory =
+      await this.categoryRepository.findOne({
+        where: {
+          nombre: createCategoryDto.nombre,
+        },
+      });
 
-async findOne(id: number) {
-const category =
-await this.categoriesRepository.findOne({
-where: {
-id_categoria: id,
-},
-});
+    if (existingCategory) {
+      throw new ConflictException(
+        'Ya existe una categoría con ese nombre.',
+      );
+    }
 
+    const category =
+      this.categoryRepository.create(createCategoryDto);
 
-if (!category) {
-  throw new NotFoundException(
-    'Categoría no encontrada',
-  );
-}
-
-return category;
-
-
-}
-
-async create(
-createCategoryDto: CreateCategoryDto,
-imagen?: Multer.File,
-) {
-const existingCategory =
-await this.categoriesRepository.findOne({
-where: {
-nombre: createCategoryDto.nombre,
-},
-});
-
-
-if (existingCategory) {
-  throw new ConflictException(
-    'Ya existe una categoría con ese nombre',
-  );
-}
-
-const category =
-  this.categoriesRepository.create({
-    nombre: createCategoryDto.nombre,
-    imagen: imagen
-      ? `/uploads/categories/${imagen.filename}`
-      : null,
-    estado: true,
-  });
-
-return this.categoriesRepository.save(
-  category,
-);
-
-
-}
-
-async update(
-id: number,
-updateCategoryDto: UpdateCategoryDto,
-imagen?: Multer.File,
-) {
-const category =
-await this.findOne(id);
-
-
-if (
-  updateCategoryDto.nombre &&
-  updateCategoryDto.nombre !==
-    category.nombre
-) {
-  const existingCategory =
-    await this.categoriesRepository.findOne({
-      where: {
-        nombre:
-          updateCategoryDto.nombre,
-      },
-    });
-
-  if (existingCategory) {
-    throw new ConflictException(
-      'Ya existe una categoría con ese nombre',
-    );
+    return await this.categoryRepository.save(category);
   }
 
-  category.nombre =
-    updateCategoryDto.nombre;
-}
+  // Por defecto (público) solo categorías activas.
+  async findAll(soloActivas = true) {
+    return await this.categoryRepository.find({
+      where: soloActivas ? { estado: true } : {},
+      order: {
+        id_categoria: 'ASC',
+      },
+    });
+  }
 
-if (imagen) {
-  category.imagen =
-    `/uploads/categories/${imagen.filename}`;
-}
+  async findOne(id: number, soloActivas = true) {
+    const category =
+      await this.categoryRepository.findOne({
+        where: {
+          id_categoria: id,
+          ...(soloActivas && { estado: true }),
+        },
+      });
 
-if (
-  updateCategoryDto.estado !==
-  undefined
-) {
-  category.estado =
-    updateCategoryDto.estado;
-}
+    if (!category) {
+      throw new NotFoundException(
+        `No existe una categoría con el ID ${id}`,
+      );
+    }
 
-return this.categoriesRepository.save(
-  category,
-);
+    return category;
+  }
 
+  async update(
+    id: number,
+    updateCategoryDto: UpdateCategoryDto,
+  ) {
+    const category = await this.findOne(id, false);
 
-}
+    if (
+      updateCategoryDto.nombre &&
+      updateCategoryDto.nombre !== category.nombre
+    ) {
+      const existingCategory =
+        await this.categoryRepository.findOne({
+          where: {
+            nombre: updateCategoryDto.nombre,
+          },
+        });
 
-async remove(id: number) {
-const category =
-await this.findOne(id);
+      if (existingCategory) {
+        throw new ConflictException(
+          'Ya existe una categoría con ese nombre.',
+        );
+      }
+    }
 
+    const imagenAnterior = category.imagen;
 
-try {
-  await this.categoriesRepository.remove(
-    category,
-  );
+    Object.assign(category, updateCategoryDto);
 
-  return {
-    message:
-      'Categoría eliminada correctamente',
-  };
-} catch (error) {
-  throw new ConflictException(
-    'No se puede eliminar la categoría porque tiene productos asociados',
-  );
-}
+    const guardada = await this.categoryRepository.save(category);
 
+    if (
+      updateCategoryDto.imagen &&
+      imagenAnterior !== updateCategoryDto.imagen
+    ) {
+      deleteUploadedFile(imagenAnterior);
+    }
 
-}
+    return guardada;
+  }
+
+  async remove(id: number) {
+    const category = await this.findOne(id, false);
+
+    try {
+      await this.categoryRepository.remove(category);
+
+      deleteUploadedFile(category.imagen);
+
+      return {
+        message: `Categoría con ID ${id} eliminada correctamente`,
+      };
+    } catch (error) {
+      if (error instanceof QueryFailedError) {
+        throw new BadRequestException(
+          'No se puede eliminar la categoría porque tiene productos asociados.',
+        );
+      }
+
+      throw error;
+    }
+  }
 }

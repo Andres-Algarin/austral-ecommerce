@@ -1,0 +1,112 @@
+.hero-carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 430px;
+  overflow: hidden;
+  border-radius: 28px;
+  background: #4d4778;
+  box-shadow: 0 24px 55px rgba(55, 47, 91, 0.22);
+}
+
+/*
+  El carrusel solo tiene min-height, así que "height: 100%" aquí
+  se resolvía en 0 y las imágenes (absolutas) no se veían.
+  El track ocupa todo el carrusel con inset: 0.
+*/
+.hero-carousel-track {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-carousel-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.65s ease, transform 0.8s ease;
+  transform: scale(1.02);
+}
+
+.hero-carousel-image--active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.hero-carousel-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: flex;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.86);
+  color: var(--color-primary);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.hero-carousel-arrow:hover {
+  background: var(--color-accent);
+  color: var(--color-text);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.hero-carousel-arrow--prev { left: 16px; }
+.hero-carousel-arrow--next { right: 16px; }
+
+.hero-carousel-dots {
+  position: absolute;
+  bottom: 17px;
+  left: 50%;
+  z-index: 2;
+  display: flex;
+  gap: 8px;
+  transform: translateX(-50%);
+}
+
+.hero-carousel-dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition: background 0.2s ease, width 0.2s ease;
+}
+
+.hero-carousel-dot--active {
+  width: 24px;
+  border-radius: 4px;
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+@media (max-width: 900px) {
+  .hero-carousel {
+    min-height: 360px;
+    border-radius: 22px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-carousel {
+    min-height: 275px;
+    border-radius: 18px;
+  }
+
+  .hero-carousel-arrow {
+    width: 34px;
+    height: 34px;
+  }
+}

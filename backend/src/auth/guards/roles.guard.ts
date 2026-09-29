@@ -29,16 +29,11 @@ export class RolesGuard implements CanActivate {
       return true;
     }
 
-    const request =
-      context.switchToHttp().getRequest();
+    const request = context
+      .switchToHttp()
+      .getRequest<{ user?: { rol: string } }>();
 
     const user = request.user;
-
-    console.log('==============================');
-    console.log('ROLES REQUERIDOS:', requiredRoles);
-    console.log('USUARIO RECIBIDO:', user);
-    console.log('ROL DEL USUARIO:', user?.rol);
-    console.log('==============================');
 
     if (!user) {
       throw new ForbiddenException(
@@ -48,7 +43,7 @@ export class RolesGuard implements CanActivate {
 
     if (!requiredRoles.includes(user.rol)) {
       throw new ForbiddenException(
-        `Rol no permitido. Requerido: ${requiredRoles.join(', ')}. Usuario: ${user.rol}`,
+        'No tienes permisos para realizar esta acción',
       );
     }
 

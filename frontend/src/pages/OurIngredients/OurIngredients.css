@@ -1,0 +1,400 @@
+.ingredients-page {
+  min-height: 100vh;
+  background: #faf8fc;
+  color: #3d3047;
+  overflow: hidden;
+}
+
+/* =========================================
+   HERO
+========================================= */
+
+.ingredients-hero {
+  position: relative;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 90px 24px 100px;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(211, 192, 226, 0.35), transparent 28%),
+    radial-gradient(circle at 85% 70%, rgba(228, 214, 205, 0.35), transparent 30%),
+    #f5f0f7;
+  overflow: hidden;
+}
+
+.ingredients-hero-content {
+  position: relative;
+  z-index: 3;
+  width: min(820px, 100%);
+  text-align: center;
+}
+
+.ingredients-eyebrow {
+  display: inline-block;
+  margin-bottom: 22px;
+  color: #83628f;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+}
+
+.ingredients-hero h1 {
+  margin: 0 auto 25px;
+  max-width: 800px;
+  color: #403149;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(3rem, 7vw, 5.8rem);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+
+.ingredients-hero h1 em {
+  color: #896795;
+  font-weight: 400;
+}
+
+.ingredients-hero p {
+  max-width: 650px;
+  margin: 0 auto;
+  color: #756879;
+  font-size: 1.05rem;
+  line-height: 1.85;
+}
+
+.ingredients-leaf {
+  position: absolute;
+  z-index: 1;
+  width: 210px;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.ingredients-leaf--left {
+  left: -40px;
+  bottom: -30px;
+  transform: rotate(-15deg);
+}
+
+.ingredients-leaf--right {
+  right: -35px;
+  top: -30px;
+  transform: rotate(15deg);
+}
+
+.ingredients-hero-decoration {
+  position: absolute;
+  border: 1px solid rgba(130, 97, 143, 0.14);
+  border-radius: 50%;
+}
+
+.ingredients-hero-decoration--one {
+  width: 360px;
+  height: 360px;
+  left: -180px;
+  top: 40px;
+}
+
+.ingredients-hero-decoration--two {
+  width: 280px;
+  height: 280px;
+  right: -120px;
+  bottom: 20px;
+}
+
+/* =========================================
+   INTRO
+========================================= */
+
+.ingredients-intro {
+  width: min(900px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 75px 0 65px;
+  text-align: center;
+}
+
+.ingredients-intro p {
+  margin: 28px auto;
+  color: #54465a;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.25rem, 2.3vw, 1.65rem);
+  line-height: 1.7;
+}
+
+.ingredients-intro-line {
+  width: 65px;
+  height: 1px;
+  margin: 0 auto;
+  background: #a88bb1;
+}
+
+/* =========================================
+   INGREDIENTES
+========================================= */
+
+.ingredients-list {
+  padding: 55px 20px 110px;
+  background: #fff;
+}
+
+.ingredients-container {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
+.ingredients-section-heading {
+  margin-bottom: 65px;
+}
+
+.ingredients-section-heading span {
+  color: #92709c;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.23em;
+}
+
+.ingredients-section-heading h2 {
+  margin: 15px 0 0;
+  color: #403149;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.5rem, 5vw, 4.3rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.ingredients-section-heading h2 em {
+  color: #92709c;
+  font-weight: 400;
+}
+
+.ingredients-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 30px;
+}
+
+.ingredient-card {
+  position: relative;
+  min-height: 430px;
+  padding: 42px;
+  border: 1px solid #e9e1eb;
+  border-radius: 4px;
+  background: #fbf9fc;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.ingredient-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(73, 48, 80, 0.08);
+}
+
+.ingredient-card--offset {
+  transform: translateY(45px);
+}
+
+.ingredient-card--offset:hover {
+  transform: translateY(40px);
+}
+
+.ingredient-card-number {
+  position: absolute;
+  top: 28px;
+  right: 32px;
+  color: #d5c7da;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 3.5rem;
+  line-height: 1;
+}
+
+.ingredient-card-content {
+  position: relative;
+  z-index: 1;
+}
+
+.ingredient-card-label {
+  display: block;
+  margin-bottom: 12px;
+  color: #9a809f;
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.ingredient-card h3 {
+  margin: 0;
+  color: #4b3852;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2.25rem;
+  font-weight: 400;
+}
+
+.ingredient-card-divider {
+  width: 45px;
+  height: 1px;
+  margin: 24px 0;
+  background: #b398bc;
+}
+
+.ingredient-card p {
+  margin: 0;
+  color: #716477;
+  font-size: 0.94rem;
+  line-height: 1.85;
+}
+
+.ingredient-skin {
+  margin-top: 28px;
+  padding: 22px 0 0;
+  border-top: 1px solid #e5dce7;
+}
+
+.ingredient-skin span {
+  display: block;
+  margin-bottom: 9px;
+  color: #8d6b96;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.ingredient-skin p {
+  font-size: 0.9rem;
+}
+
+/* =========================================
+   CIERRE
+========================================= */
+
+.ingredients-closing {
+  position: relative;
+  min-height: 390px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+  padding: 80px 30px;
+  background: #eee6f0;
+  overflow: hidden;
+  text-align: center;
+}
+
+.ingredients-closing > div {
+  position: relative;
+  z-index: 2;
+  max-width: 650px;
+}
+
+.ingredients-closing span {
+  color: #87668f;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+}
+
+.ingredients-closing h2 {
+  margin: 15px 0;
+  color: #45344c;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+.ingredients-closing h2 em {
+  color: #886792;
+  font-weight: 400;
+}
+
+.ingredients-closing p {
+  max-width: 520px;
+  margin: 0 auto;
+  color: #756779;
+  line-height: 1.8;
+}
+
+.ingredients-closing img {
+  width: 170px;
+  opacity: 0.2;
+}
+
+.ingredients-closing img:first-child {
+  transform: rotate(-15deg);
+}
+
+.ingredients-closing img:last-child {
+  transform: rotate(15deg);
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 850px) {
+  .ingredients-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ingredient-card--offset {
+    transform: none;
+  }
+
+  .ingredient-card--offset:hover {
+    transform: translateY(-5px);
+  }
+
+  .ingredients-closing {
+    gap: 10px;
+  }
+
+  .ingredients-closing img {
+    width: 100px;
+  }
+}
+
+@media (max-width: 600px) {
+  .ingredients-hero {
+    min-height: 450px;
+    padding: 70px 20px;
+  }
+
+  .ingredients-hero h1 {
+    font-size: 3rem;
+  }
+
+  .ingredients-intro {
+    padding: 55px 0;
+  }
+
+  .ingredients-list {
+    padding: 50px 15px 80px;
+  }
+
+  .ingredient-card {
+    min-height: auto;
+    padding: 32px 25px;
+  }
+
+  .ingredient-card h3 {
+    font-size: 2rem;
+  }
+
+  .ingredient-card-number {
+    right: 22px;
+    top: 22px;
+    font-size: 2.8rem;
+  }
+
+  .ingredients-closing {
+    min-height: 350px;
+    padding: 70px 20px;
+  }
+
+  .ingredients-closing img {
+    display: none;
+  }
+}

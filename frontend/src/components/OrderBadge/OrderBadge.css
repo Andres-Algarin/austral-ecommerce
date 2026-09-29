@@ -1,0 +1,48 @@
+.order-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.order-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.order-badge--pendiente {
+  background: #fdf3dc;
+  color: #a06b00;
+}
+
+.order-badge--pagado {
+  background: #e5f0ff;
+  color: #2d63b8;
+}
+
+.order-badge--preparando {
+  background: #efeafb;
+  color: #6a5aa8;
+}
+
+.order-badge--enviado {
+  background: #e3f6fb;
+  color: #1c7f99;
+}
+
+.order-badge--entregado {
+  background: #dcf7ec;
+  color: #1d8f6a;
+}
+
+.order-badge--cancelado {
+  background: #f4f2f6;
+  color: #8a8494;
+}

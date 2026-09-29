@@ -4,7 +4,11 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+
+import { Address } from '../../addresses/entities/address.entity';
+import { Cart } from '../../carts/entities/cart.entity';
 
 @Entity('usuarios')
 export class User {
@@ -67,4 +71,10 @@ export class User {
 
   @UpdateDateColumn()
   fecha_actualizacion!: Date;
+
+  @OneToMany(() => Address, (address) => address.usuario)
+  direcciones!: Address[];
+
+  @OneToMany(() => Cart, (cart) => cart.usuario)
+  carritos!: Cart[];
 }

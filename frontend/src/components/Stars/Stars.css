@@ -1,0 +1,30 @@
+.stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.stars > span,
+.stars > button {
+  display: inline-flex;
+}
+
+.stars-full {
+  color: #f2b01e;
+  fill: #f2b01e;
+}
+
+.stars-empty {
+  color: #d9d4e2;
+  fill: transparent;
+}
+
+.stars--input button {
+  padding: 2px;
+  border-radius: 6px;
+  transition: transform 0.15s ease;
+}
+
+.stars--input button:hover {
+  transform: scale(1.15);
+}

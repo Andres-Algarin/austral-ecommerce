@@ -1,0 +1,222 @@
+.register-page {
+  min-height: calc(100vh - 90px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--color-background);
+}
+
+.register-brand {
+  min-height: calc(100vh - 90px);
+  background: var(--color-primary);
+  color: var(--color-text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+}
+
+.register-brand-content {
+  max-width: 500px;
+}
+
+.register-brand-label {
+  display: inline-block;
+  margin-bottom: 30px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 3px;
+}
+
+.register-brand h1 {
+  margin-bottom: 25px;
+  font-family: var(--font-title);
+  font-size: clamp(42px, 5vw, 72px);
+  line-height: 0.95;
+  font-weight: 400;
+}
+
+.register-brand p {
+  max-width: 430px;
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.register-section {
+  min-height: calc(100vh - 90px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+  background: var(--color-background);
+}
+
+.register-container {
+  width: 100%;
+  max-width: 520px;
+}
+
+.register-header {
+  margin-bottom: 35px;
+}
+
+.register-header > span {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--color-primary);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+.register-header h2 {
+  margin-bottom: 10px;
+  font-family: var(--font-title);
+  font-size: 42px;
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.register-header p {
+  color: var(--color-text-secondary);
+  font-family: var(--font-body);
+  font-size: 16px;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.register-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.register-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.register-field label {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.register-field input {
+  width: 100%;
+  height: 50px;
+  padding: 0 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  outline: none;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  transition: border-color 0.2s ease;
+}
+
+.register-field input:focus {
+  border-color: var(--color-primary);
+}
+
+.register-field input::placeholder {
+  color: #999999;
+}
+
+.register-password-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.register-password-input input {
+  padding-right: 50px;
+}
+
+.register-password-input button {
+  position: absolute;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+}
+
+.register-button {
+  width: 100%;
+  height: 52px;
+  margin-top: 5px;
+  background: var(--color-primary);
+  color: var(--color-text-light);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 500;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.register-button:hover {
+  background: #755da6;
+}
+
+.register-button:active {
+  transform: translateY(1px);
+}
+
+.register-login {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 25px;
+  font-family: var(--font-body);
+  font-size: 14px;
+}
+
+.register-login span {
+  color: var(--color-text-secondary);
+}
+
+.register-login a {
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .register-page {
+    grid-template-columns: 1fr;
+  }
+
+  .register-brand {
+    min-height: 350px;
+  }
+
+  .register-section {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .register-brand,
+  .register-section {
+    padding: 40px 25px;
+  }
+
+  .register-brand h1 {
+    font-size: 48px;
+  }
+
+  .register-header h2 {
+    font-size: 34px;
+  }
+
+  .register-row {
+    grid-template-columns: 1fr;
+  }
+}

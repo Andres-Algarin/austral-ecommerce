@@ -1,21 +1,66 @@
+import { Transform } from 'class-transformer';
+import {
+  IsBoolean,
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Min,
+} from 'class-validator';
+
 export class CreateProductDto {
+  @IsString()
+  @IsNotEmpty()
   nombre!: string;
 
-  descripcion!: string;
+  @IsOptional()
+  @IsString()
+  descripcion?: string;
 
-  beneficios!: string;
+  @IsOptional()
+  @IsString()
+  beneficios?: string;
 
-  ingredientes!: string;
+  @IsOptional()
+  @IsString()
+  ingredientes?: string;
 
-  modo_uso!: string;
+  @IsOptional()
+  @IsString()
+  modo_uso?: string;
 
+  @Transform(({ value }: { value: unknown }) => Number(value))
+  @IsNumber()
+  @Min(0)
   precio!: number;
 
+  @Transform(({ value }: { value: unknown }) => Number(value))
+  @IsInt()
+  @Min(0)
   stock!: number;
 
-  imagen_principal!: string;
+  @IsOptional()
+  @IsString()
+  imagen_principal?: string;
 
-  estado!: boolean;
+  @IsOptional()
+  @Transform(({ value }: { value: unknown }) => {
+    if (value === 'true' || value === true) {
+      return true;
+    }
 
+    if (value === 'false' || value === false) {
+      return false;
+    }
+
+    return value;
+  })
+  @IsBoolean()
+  estado?: boolean;
+
+  @Transform(({ value }: { value: unknown }) => Number(value))
+  @IsInt()
+  @Min(1)
   id_categoria!: number;
 }

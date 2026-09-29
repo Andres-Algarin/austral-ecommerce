@@ -1,54 +1,83 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  color: #213547;
-  background-color: #ffffff;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --color-primary: #8378B5;
+  --color-accent: #3deab2;
+  --color-background: #ffffff;
+  --color-surface: #f5f2fb; 
+  --color-text: #000000;
+  --color-text-light: #ffffff;
+  --color-text-secondary: #666666;
+  --color-border: #e8e5ed;
+  --color-success: #3deab2;
+  --color-error: #ff4d4d;
+
+  --font-title: "Poppins", "Car Sans", Arial, sans-serif;
+--font-body: "Jost", "Neue Montreal", Arial, sans-serif;
+}
+
+@font-face {
+  font-family: "Car Sans";
+  src: url("./assets/fonts/CarSans-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Neue Montreal";
+  src: url("./assets/fonts/NeueMontreal-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
+  font-family: var(--font-body);
+  background: var(--color-background);
+  color: var(--color-text);
 }
 
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #f9f9f9;
+  border: none;
+  background: none;
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-
-button:hover {
-  border-color: #646cff;
 }
 
 a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+  color: inherit;
+  text-decoration: none;
 }
 
-a:hover {
-  color: #535bf2;
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-title);
 }
+
+p {
+  font-family: var(--font-body);
+}
+
+
+
